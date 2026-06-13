@@ -1,6 +1,7 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Image, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
+import { SymbolView } from 'expo-symbols';
 
 import { Colors } from '@/constants/theme';
 
@@ -15,6 +16,8 @@ export default function AppTabs() {
         tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
           backgroundColor: colors.background,
+          borderTopWidth: 1,
+          borderTopColor: '#eaeaea',
         },
         headerShown: false,
       }}>
@@ -23,10 +26,7 @@ export default function AppTabs() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
-            <Image
-              source={require('@/assets/images/tabIcons/home.png')}
-              style={{ width: 24, height: 24, tintColor: color }}
-            />
+            <SymbolView name="house.fill" tintColor={color} size={24} />
           ),
         }}
       />
@@ -35,10 +35,25 @@ export default function AppTabs() {
         options={{
           title: 'Explore',
           tabBarIcon: ({ color }) => (
-            <Image
-              source={require('@/assets/images/tabIcons/explore.png')}
-              style={{ width: 24, height: 24, tintColor: color }}
-            />
+            <SymbolView name="magnifyingglass" tintColor={color} size={24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="activity"
+        options={{
+          title: 'Activity',
+          tabBarIcon: ({ color }) => (
+            <SymbolView name="list.bullet" tintColor={color} size={24} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="inbox"
+        options={{
+          title: 'Inbox',
+          tabBarIcon: ({ color }) => (
+            <SymbolView name="message.fill" tintColor={color} size={24} />
           ),
         }}
       />

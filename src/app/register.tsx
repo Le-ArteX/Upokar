@@ -1,17 +1,20 @@
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SymbolView } from 'expo-symbols';
 
 import { Colors } from '@/constants/theme';
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const router = useRouter();
+  const [role, setRole] = useState<'customer' | 'runner'>('customer');
 
   return (
     <View style={styles.container}>
       <SafeAreaView edges={['top']} style={styles.header}>
-        <Text style={styles.title}>Welcome to Upokar</Text>
-        <Text style={styles.subtitle}>Enter your mobile number</Text>
+        <Text style={styles.title}>Join Upokar</Text>
+        <Text style={styles.subtitle}>Create your account</Text>
       </SafeAreaView>
 
       <View style={styles.bottomSheet}>
@@ -28,14 +31,41 @@ export default function LoginScreen() {
           />
         </View>
 
-        <Text style={styles.infoText}>You will receive a 6-digit OTP to verify your number.</Text>
+        <Text style={styles.label}>I am a</Text>
+        <View style={styles.roleContainer}>
+          <Pressable 
+            style={[styles.roleCard, role === 'customer' && styles.roleCardActive]}
+            onPress={() => setRole('customer')}
+          >
+            <SymbolView 
+              name="person" 
+              tintColor={role === 'customer' ? Colors.light.primary : '#60646C'} 
+              size={24} 
+            />
+            <Text style={[styles.roleTitle, role === 'customer' && styles.roleTitleActive]}>Customer</Text>
+            <Text style={[styles.roleSubtitle, role === 'customer' && styles.roleSubtitleActive]}>Post tasks</Text>
+          </Pressable>
+
+          <Pressable 
+            style={[styles.roleCard, role === 'runner' && styles.roleCardActive]}
+            onPress={() => setRole('runner')}
+          >
+            <SymbolView 
+              name="figure.run" 
+              tintColor={role === 'runner' ? Colors.light.primary : '#60646C'} 
+              size={24} 
+            />
+            <Text style={[styles.roleTitle, role === 'runner' && styles.roleTitleActive]}>Runner</Text>
+            <Text style={[styles.roleSubtitle, role === 'runner' && styles.roleSubtitleActive]}>Earn money</Text>
+          </Pressable>
+        </View>
 
         <View style={{ flex: 1 }} />
 
         <SafeAreaView edges={['bottom']}>
           <Pressable 
             style={styles.primaryButton}
-            onPress={() => router.push('/otp')}
+            onPress={() => router.push('/otp' as any)}
           >
             <Text style={styles.primaryButtonText}>Send OTP code</Text>
           </Pressable>
@@ -86,7 +116,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.light.primary,
     borderRadius: 12,
     height: 56,
-    marginBottom: 16,
+    marginBottom: 32,
   },
   prefix: {
     fontSize: 16,
@@ -105,9 +135,38 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     color: '#000000',
   },
-  infoText: {
-    fontSize: 14,
+  roleContainer: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 32,
+  },
+  roleCard: {
+    flex: 1,
+    borderWidth: 1.5,
+    borderColor: '#e0e0e0',
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    gap: 8,
+  },
+  roleCardActive: {
+    borderColor: Colors.light.primary,
+    backgroundColor: Colors.light.backgroundSelected,
+  },
+  roleTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+  roleTitleActive: {
+    color: Colors.light.primary,
+  },
+  roleSubtitle: {
+    fontSize: 12,
     color: '#60646c',
+  },
+  roleSubtitleActive: {
+    color: Colors.light.primary,
   },
   primaryButton: {
     width: '100%',

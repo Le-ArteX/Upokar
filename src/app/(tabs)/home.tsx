@@ -1,98 +1,194 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SymbolView } from 'expo-symbols';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { Colors } from '@/constants/theme';
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Upokar<ThemedText type="title" style={{ color: '#f36b0a' }}>.</ThemedText>
-          </ThemedText>
-        </ThemedView>
+    <View style={styles.container}>
+      <SafeAreaView edges={['top']} style={{ backgroundColor: '#ffffff' }} />
+      
+      {/* Top Header Row (Simulating the mockup header) */}
+      <View style={styles.topBar}>
+        <View style={{ flex: 1 }} />
+        <Pressable>
+          <SymbolView name="ellipsis" tintColor="#000000" size={24} />
+        </Pressable>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        
+        {/* Greeting Section */}
+        <Text style={styles.roleSubtitle}>CUSTOMER - HOME</Text>
+        <Text style={styles.greeting}>Hi, Rafi 👋</Text>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        {/* Location Pill */}
+        <Pressable style={styles.locationPill}>
+          <SymbolView name="mappin.and.ellipse" tintColor={Colors.light.primary} size={18} />
+          <Text style={styles.locationText}>Gulshan-1, Dhaka</Text>
+        </Pressable>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {/* Search Section */}
+        <View style={styles.searchSection}>
+          <Text style={styles.searchHeading}>What do you need?</Text>
+          <View style={styles.searchInputContainer}>
+            <SymbolView name="magnifyingglass" tintColor="#a0a0a0" size={20} />
+            <TextInput 
+              style={styles.searchInput}
+              placeholder="Search item or shop..."
+              placeholderTextColor="#a0a0a0"
+            />
+          </View>
+        </View>
+
+        {/* Action Grid */}
+        <View style={styles.grid}>
+          <Pressable style={styles.gridCard}>
+            <View style={styles.iconWrapper}>
+              <SymbolView name="bag" tintColor={Colors.light.primary} size={32} />
+            </View>
+            <Text style={styles.gridCardText}>Buy item</Text>
+          </Pressable>
+          
+          <Pressable style={styles.gridCard}>
+            <View style={styles.iconWrapper}>
+              <SymbolView name="shippingbox" tintColor={Colors.light.primary} size={32} />
+            </View>
+            <Text style={styles.gridCardText}>Courier pickup</Text>
+          </Pressable>
+        </View>
+
+        <View style={{ flex: 1 }} />
+
+        {/* Bottom CTA */}
+        <Pressable style={styles.ctaButton}>
+          <Text style={styles.ctaButtonText}>Post a request</Text>
+        </Pressable>
+
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#ffffff',
+  },
+  topBar: {
     flexDirection: 'row',
+    paddingHorizontal: 24,
+    paddingTop: 12,
+    paddingBottom: 8,
+    backgroundColor: '#ffffff',
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingBottom: 100, // Leave room for bottom tabs
+  },
+  roleSubtitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: Colors.light.primary,
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  greeting: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#000000',
+    marginBottom: 20,
+  },
+  locationPill: {
+    flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    backgroundColor: '#f5f5f5',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    alignSelf: 'flex-start',
+    marginBottom: 32,
+    gap: 8,
   },
-  heroSection: {
+  locationText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#000000',
+  },
+  searchSection: {
+    backgroundColor: '#f9f9f9',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#eaeaea',
+  },
+  searchHeading: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Colors.light.primary,
+    marginBottom: 12,
+  },
+  searchInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#eaeaea',
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 15,
+    color: '#000000',
+  },
+  grid: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 48,
+  },
+  gridCard: {
+    flex: 1,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 16,
+    padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    borderWidth: 1,
+    borderColor: '#eaeaea',
+    gap: 12,
   },
-  title: {
-    textAlign: 'center',
+  iconWrapper: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: Colors.light.backgroundSelected, // #ffece0
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  code: {
-    textTransform: 'uppercase',
+  gridCardText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#000000',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  ctaButton: {
+    backgroundColor: Colors.light.primary,
+    borderRadius: 16,
+    paddingVertical: 18,
+    alignItems: 'center',
+    marginTop: 'auto',
+  },
+  ctaButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#ffffff',
   },
 });

@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -7,48 +7,69 @@ import { Colors } from '@/constants/theme';
 
 export default function OTPScreen() {
   const router = useRouter();
-  const [name, setName] = useState('');
   
-  // Example dummy state for 6 digits
-  const digits = ['4', '7', '2', '', '', ''];
+  const [code, setCode] = useState('');
+  const inputRef = useRef<TextInput>(null);
 
-  const isFormValid = name.trim().length > 0;
+  // Generate exactly 6 boxes
+  const digits = code.split('');
+  while (digits.length < 6) {
+    digits.push('');
+  }
+
+  // Button is only enabled when all 6 digits are entered
+  const isFormValid = code.length === 6;
+
+  const handlePressBoxes = () => {
+    inputRef.current?.focus();
+  };
 
   return (
     <View style={styles.container}>
       <SafeAreaView edges={['top']} style={styles.header}>
         <Text style={styles.title}>Verify your number</Text>
-        <Text style={styles.subtitle}>Sent to 017XX XXXXXX</Text>
+        <Text style={styles.subtitle}>Sent to +88017XX XXXXXX</Text>
       </SafeAreaView>
 
       <View style={styles.bottomSheet}>
-        <View style={styles.otpContainer}>
-          {digits.map((digit, index) => (
-            <View 
-              key={index} 
-              style={[
-                styles.otpBox, 
-                digit ? styles.otpBoxFilled : styles.otpBoxEmpty
-              ]}
-            >
-              <Text style={styles.otpText}>{digit}</Text>
-            </View>
-          ))}
-        </View>
+        <Pressable style={styles.otpContainer} onPress={handlePressBoxes}>
+          {digits.map((digit, index) => {
+            const isActive = index === code.length || (code.length === 6 && index === 5);
+            return (
+              <View 
+                key={index} 
+                style={[
+                  styles.otpBox, 
+                  digit ? styles.otpBoxFilled : styles.otpBoxEmpty,
+                  isActive && styles.otpBoxActive
+                ]}
+              >
+                <Text style={styles.otpText}>{digit}</Text>
+              </View>
+            );
+          })}
+        </Pressable>
+
+        {/* Hidden Input to handle the actual keyboard logic */}
+        <TextInput
+          ref={inputRef}
+          value={code}
+          onChangeText={(text) => {
+            const numericText = text.replace(/[^0-9]/g, '');
+            if (numericText.length <= 6) {
+              setCode(numericText);
+            }
+          }}
+          keyboardType="number-pad"
+          textContentType="oneTimeCode"
+          style={styles.hiddenInput}
+          autoFocus
+        />
 
         <Text style={styles.resendText}>Resend in 0:42</Text>
         <Text style={styles.infoText}>
           OTP valid 5 minutes. Never share this code.
         </Text>
-
-        <Text style={styles.label}>Your name</Text>
-        <TextInput 
-          style={styles.input} 
-          placeholder="Full name" 
-          placeholderTextColor="#a0a0a0"
-          value={name}
-          onChangeText={setName}
-        />
 
         <View style={{ flex: 1 }} />
 
@@ -114,17 +135,28 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   otpBoxFilled: {
-    borderColor: Colors.light.primary,
+    borderColor: '#e0e0e0', // Keep border grey once filled unless active
   },
   otpBoxEmpty: {
     borderColor: '#e0e0e0',
+  },
+  otpBoxActive: {
+    borderColor: Colors.light.primary,
+    borderWidth: 2,
   },
   otpText: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#000000',
+  },
+  hiddenInput: {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    opacity: 0,
   },
   resendText: {
     fontSize: 14,
@@ -137,22 +169,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#60646c',
     marginBottom: 32,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#000000',
-    marginBottom: 12,
-  },
-  input: {
-    borderWidth: 1.5,
-    borderColor: '#e0e0e0',
-    borderRadius: 12,
-    height: 56,
-    fontSize: 16,
-    paddingHorizontal: 16,
-    color: '#000000',
-    marginBottom: 32,
+    textAlign: 'center',
   },
   primaryButton: {
     width: '100%',

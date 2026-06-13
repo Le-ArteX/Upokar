@@ -25,14 +25,14 @@ export default function WelcomeScreen() {
         <View style={styles.buttonContainer}>
           <Pressable 
             style={[styles.button, styles.primaryButton]} 
-            onPress={() => router.push('/login' as any)}
+            onPress={() => router.push('/register' as any)}
           >
             <Text style={styles.primaryButtonText}>Get started</Text>
           </Pressable>
           
           <Pressable 
             style={[styles.button, styles.secondaryButton]}
-            onPress={() => {}}
+            onPress={() => router.push('/login' as any)}
           >
             <Text style={styles.secondaryButtonText}>I already have an account</Text>
           </Pressable>
