@@ -3,19 +3,19 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SymbolView } from 'expo-symbols';
 
-const BG = '#0A0A0A';
-const CARD_BG = '#1A1A1A';
-const BORDER = '#333333';
-const TEXT_MAIN = '#FFFFFF';
-const TEXT_MUTED = '#A0A0A0';
+const BG = '#FAFAFA';
+const CARD_BG = '#FFFFFF';
+const BORDER = '#EAEAEA';
+const TEXT_MAIN = '#111111';
+const TEXT_MUTED = '#888888';
 const ORANGE = '#F36B0A';
-const LIGHT_ORANGE = '#3D2111'; // Dark-ish orange for pill backgrounds
+const LIGHT_ORANGE = '#FDF3ED'; 
 
 export default function PostTaskScreen() {
   const router = useRouter();
 
   return (
-    <SafeAreaView edges={['top']} style={styles.container}>
+    <SafeAreaView edges={['top', 'bottom']} style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} hitSlop={10} style={styles.backButton}>

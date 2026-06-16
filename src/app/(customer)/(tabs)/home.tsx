@@ -20,7 +20,7 @@ export default function HomeScreen() {
         provider={PROVIDER_DEFAULT}
         style={StyleSheet.absoluteFillObject}
         initialRegion={{
-          latitude: 23.8103, // Dhaka coordinates
+          latitude: 23.8103, 
           longitude: 90.4125,
           latitudeDelta: 0.05,
           longitudeDelta: 0.05,
@@ -28,15 +28,15 @@ export default function HomeScreen() {
         showsUserLocation={true}
       />
       
-      {/* Fixed Center Map Pin (Uber-style) */}
+ 
       <View className="absolute inset-0 items-center justify-center pointer-events-none" style={{ marginTop: -height * 0.15 }}>
-        <View className="w-16 h-16 rounded-full bg-[#F36B0A]/20 items-center justify-center">
+        <View className="w-16 h-16 rounded-full items-center justify-center" style={{ backgroundColor: 'rgba(243, 107, 10, 0.2)' }}>
           <View className="w-4 h-4 rounded-full bg-[#F36B0A] border-[3px] border-white shadow-sm" />
         </View>
       </View>
 
       <SafeAreaView className="flex-1 justify-between" edges={['top']}>
-        {/* Floating Top Nav */}
+      
         <View className="flex-row justify-between px-5 pt-4" pointerEvents="box-none">
           <Pressable className="w-11 h-11 rounded-full bg-white items-center justify-center shadow-md elevation-5">
             <Ionicons name="menu" color={TEXT_MAIN} size={28} />
@@ -47,7 +47,7 @@ export default function HomeScreen() {
           </Pressable>
         </View>
 
-        {/* Bottom Sheet / Content Area */}
+    
         <View 
           className="bg-[#FAFAFA] rounded-t-3xl shadow-xl elevation-10 flex-1 mt-auto"
           style={{ maxHeight: height * 0.65, shadowOffset: { width: 0, height: -4 } }}
@@ -56,13 +56,11 @@ export default function HomeScreen() {
             contentContainerClassName="px-5 pb-[100px]" 
             showsVerticalScrollIndicator={false}
           >
-            
-            {/* Grabber Handle */}
+
             <View className="w-10 h-1 bg-[#EAEAEA] rounded-full self-center mt-3 mb-5" />
 
-            <Text className="text-[22px] font-bold text-[#111111] mb-5">Good morning, Arif 👋</Text>
 
-            {/* Uber-style Search Bar */}
+          
             <Pressable 
               className="flex-row items-center bg-white px-4 py-3.5 rounded-2xl mb-6 shadow-sm"
               onPress={() => router.push('/post-task')}
@@ -75,7 +73,7 @@ export default function HomeScreen() {
               </View>
             </Pressable>
 
-            {/* Service Grid */}
+         
             <View className="flex-row flex-wrap justify-between mb-8">
               <Pressable className="w-[23%] items-center gap-2" onPress={() => router.push('/post-task')}>
                 <View className="w-full aspect-square rounded-2xl bg-[#FDF3ED] items-center justify-center">
@@ -106,7 +104,7 @@ export default function HomeScreen() {
               </Pressable>
             </View>
 
-            {/* Recent Locations / Tasks */}
+         
             <View className="mb-5">
               <Text className="text-[18px] font-bold text-[#111111] mb-4">Recent</Text>
               
